@@ -69,6 +69,16 @@
       "title": "Analista Programador",
       "groupId": "3",
       "id": "sh_T_Eq"
+    },
+    {
+      "name": "Walter Echavarria Pardo",
+      "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/2048px-User_icon_2.svg.png",
+      "mobile": "300300302",
+      "email": "email@gmail.com",
+      "company": "Google",
+      "title": "Developer",
+      "groupId": "3",
+      "id": "8O_JN9d"
     }
   ],
   "groups": [

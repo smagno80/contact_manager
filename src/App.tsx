@@ -1,8 +1,8 @@
 import { ReactElement } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
-// import './assets/main.css';
-// import './assets/chrome-bug.css';
+import './assets/main.css';
+import './assets/chrome-bug.css';
 
 import NavBar from './components/NavBar/NavBar';
 import ContactList from './components/contacts/ContactList/ContactList';

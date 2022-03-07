@@ -7,6 +7,8 @@ import {
 	useState,
 } from 'react';
 import { Link } from 'react-router-dom';
+import { FaPlusCircle } from 'react-icons/fa';
+
 import { Contact, IContacts, IPropsContactItem } from '../../../interface';
 import { ContactService } from '../../../services/ContactService';
 import Spinner from '../../Spinner/Spinner';
@@ -76,19 +78,26 @@ const ContactList: FC = (): ReactElement => {
 	return (
 		<>
 			{/* <pre>{JSON.stringify(contacts)}</pre> */}
-			<section className='contact-search p-5'>
+			<section>
 				<div className='container'>
-					<div className='grid'>
-						<div className='row'>
+					<div className='px-4 md:px-14'>
+						<div className='row flex w-full flex-col'>
 							<div className='col'>
-								<p className='h3'>
-									Contact Manager
-									<Link to={'/contacts/add'} className='btn btn-primary ms-2'>
-										<i className='fa fa-plus-circle me-2' />
-										New
+								<div className='flex items-center space-x-2'>
+									<p className='text-3xl font-bold text-black'>
+										Contact Manager
+									</p>
+
+									<Link
+										to={'/contacts/add'}
+										className='flex items-center space-x-2 rounded border border-blue-700 bg-blue-500 py-2 px-4 font-bold text-white transition-all duration-300 ease-out hover:bg-transparent hover:text-blue-700'
+									>
+										<FaPlusCircle />
+										<span>New</span>
 									</Link>
-								</p>
-								<p className='fst-italic'>
+								</div>
+
+								<p className='pb-4 italic text-black'>
 									Lorem ipsum dolor sit amet consectetur adipisicing elit.
 									Repellendus, ut repellat. Repellendus excepturi, itaque
 									voluptatibus ipsam ut distinctio. Vel consequatur commodi ad,
@@ -97,28 +106,31 @@ const ContactList: FC = (): ReactElement => {
 								</p>
 							</div>
 						</div>
-						<div className='row'>
-							<div className='col-md-6'>
-								<form className='row'>
-									<div className='col'>
-										<div className='mb-2'>
+
+						<div className='row flex flex-col'>
+							<div className='col flex flex-col'>
+								<form className='row flex items-center space-x-5'>
+									<div className='col w-full lg:w-1/2'>
+										<div className=''>
 											<input
-												type='text'
-												className='form-control'
-												placeholder='Search Names'
+												className='focus:shadow-outline w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none'
 												name='text'
+												type='text'
+												placeholder='Search Names'
 												value={query.text}
 												onChange={onSearch}
-											/>
+											></input>
 										</div>
 									</div>
+
 									<div className='col'>
-										<div className='mb-2'>
-											<input
+										<div className=''>
+											<button
 												type='submit'
-												className='btn btn-outline-dark'
-												value='Search'
-											/>
+												className='rounded border border-gray-800 bg-transparent py-2 px-4 font-semibold text-gray-800 transition-all duration-300 ease-out hover:border-transparent hover:bg-gray-800 hover:text-white'
+											>
+												Search
+											</button>
 										</div>
 									</div>
 								</form>
