@@ -6,7 +6,6 @@ import {
 	useEffect,
 	useState,
 } from 'react';
-import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 import { Contact, IContacts, IPropsContactItem } from '../../../interface';
 import { ContactService } from '../../../services/ContactService';
@@ -60,14 +59,16 @@ const ContactList: FC = (): ReactElement => {
 	): void => {
 		setQuery({ ...query, text: event.target.value });
 
-		const filterContacts = state.contacts!.filter(
-			(contact: Contact): boolean => {
-				return contact.name!.toLowerCase().includes(query.text.toLowerCase());
-			}
-		);
-
-		// console.log(filterContacts);
-		setState({ ...state, filterContacts });
+		if (!state.contacts || event.target.value === '') {
+			setState({ ...state, filterContacts: state.contacts });
+		} else {
+			const filterContacts = state.contacts.filter(
+				(contact: Contact): boolean => {
+					return contact.name!.toLowerCase().includes(query.text.toLowerCase());
+				}
+			);
+			setState({ ...state, filterContacts });
+		}
 	};
 
 	const { loading, filterContacts } = state;
@@ -204,28 +205,6 @@ const ContactItem: FC<IContactItemProps> = ({
 				</div>
 			</div>
 		</div>
-	);
-};
-
-const SkeletonCard = () => {
-	return (
-		<section>
-			<h2>
-				<Skeleton duration={1} height={30} width={300} />
-			</h2>
-			<ul>
-				{Array(5)
-					.fill(0)
-					.map((item: any, index: number): void => {
-						<li key={index}>
-							<Skeleton height={40} width={500} />
-							<Skeleton height={30} width={`80%`} />
-							<Skeleton height={40} width={`60%`} />
-							<Skeleton height={40} width={`10%`} />
-						</li>;
-					})}
-			</ul>
-		</section>
 	);
 };
 

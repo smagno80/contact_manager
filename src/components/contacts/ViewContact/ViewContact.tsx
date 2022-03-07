@@ -1,12 +1,12 @@
 import { FC, ReactElement, useState, useEffect } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import { Link, useParams } from 'react-router-dom';
 import { IContactItem, IPropsContactItem } from '../../../interface';
 import { ContactService } from '../../../services/ContactService';
-import Spinner from '../../Spinner/Spinner';
 
 const ViewContact: FC = (): ReactElement => {
 	const [state, setState] = useState<IContactItem>({
-		loading: false,
+		loading: true,
 		contact: {},
 		errorMessage: '',
 		group: {},
@@ -14,7 +14,7 @@ const ViewContact: FC = (): ReactElement => {
 	const { contactId } = useParams();
 
 	useEffect((): void => {
-		(async (): Promise<void> => {
+		const fetchData = async (): Promise<void> => {
 			try {
 				setState({ ...state, loading: true });
 				const response = await ContactService.getContactById(contactId!);
@@ -30,17 +30,15 @@ const ViewContact: FC = (): ReactElement => {
 			} catch (error: any) {
 				setState({ ...state, loading: false, errorMessage: error.message });
 			}
-		})();
+		};
+		fetchData();
 	}, [contactId]);
 
 	const { loading, contact, group } = state;
 
-	if (loading) {
-		return <Spinner />;
-	}
-
 	return (
 		<>
+			{/* <pre>{loading ? 'Cargando ...' : 'Cargado'}</pre> */}
 			<section className='view-contact-intro p-3'>
 				<div className='container'>
 					<div className='row'>
@@ -58,51 +56,82 @@ const ViewContact: FC = (): ReactElement => {
 				</div>
 			</section>
 
-			{loading ? (
-				<Spinner />
-			) : (
-				<>
-					{/* <pre>{JSON.stringify(group)}</pre> */}
-					{Object.keys(contact).length > 0 && Object.keys(group).length > 0 && (
-						<ContactItem contact={contact} group={group} />
-					)}
-				</>
+			{/* <pre>{JSON.stringify(group)}</pre> */}
+			{Object.keys(contact).length > 0 && Object.keys(group).length > 0 && (
+				<ContactItem contact={contact} group={group} loading={loading} />
 			)}
 		</>
 	);
 };
 
-const ContactItem: FC<IPropsContactItem> = ({
+interface IContactItemProps extends IPropsContactItem {
+	loading: boolean;
+}
+
+const ContactItem: FC<IContactItemProps> = ({
 	contact,
 	group,
+	loading,
 }): ReactElement => {
 	return (
 		<section className='view-contact-form m-3'>
 			<div className='container'>
 				<div className='row align-items-center'>
 					<div className='col-md-4'>
-						<img src={contact.photo} alt='' className='contact-img' />
+						{loading ? (
+							<Skeleton
+								circle
+								height={200}
+								width={200}
+								containerClassName='avatar-skeleton'
+							/>
+						) : (
+							<img src={contact.photo} alt='' className='contact-img' />
+						)}
 					</div>
 					<div className='col-md-8'>
 						<ul className='list-group'>
 							<li className='list-group-item list-group-item-action'>
-								Name : <span className='fw-bold'>{contact.name}</span>
+								<ShowData
+									loading={loading}
+									title={'Name'}
+									field={contact.name}
+								/>
 							</li>
 							<li className='list-group-item list-group-item-action'>
-								Mobile : <span className='fw-bold'>{contact.mobile}</span>
+								<ShowData
+									loading={loading}
+									title={'Mobile'}
+									field={contact.mobile}
+								/>
 							</li>
 							<li className='list-group-item list-group-item-action'>
-								Email : <span className='fw-bold'>{contact.email}</span>
+								<ShowData
+									loading={loading}
+									title={'Email'}
+									field={contact.email}
+								/>
 							</li>
 							<li className='list-group-item list-group-item-action'>
-								Company : <span className='fw-bold'>{contact.company}</span>
+								<ShowData
+									loading={loading}
+									title={'Company'}
+									field={contact.company}
+								/>
 							</li>
-
 							<li className='list-group-item list-group-item-action'>
-								Title : <span className='fw-bold'>{contact.title}</span>
+								<ShowData
+									loading={loading}
+									title={'Title'}
+									field={contact.title}
+								/>
 							</li>
 							<li className='list-group-item list-group-item-action'>
-								Group : <span className='fw-bold'>{group?.name}</span>
+								<ShowData
+									loading={loading}
+									title={'Group'}
+									field={group?.name}
+								/>
 							</li>
 						</ul>
 					</div>
@@ -117,6 +146,30 @@ const ContactItem: FC<IPropsContactItem> = ({
 				</div>
 			</div>
 		</section>
+	);
+};
+
+interface IShowDataProps {
+	loading: boolean;
+	title: string;
+	field: string | undefined;
+}
+
+const ShowData: FC<IShowDataProps> = ({
+	loading,
+	title,
+	field,
+}): ReactElement => {
+	return (
+		<>
+			{loading ? (
+				<Skeleton height={30} />
+			) : (
+				<>
+					{title} : <span className='fw-bold'>{field}</span>
+				</>
+			)}
+		</>
 	);
 };
 

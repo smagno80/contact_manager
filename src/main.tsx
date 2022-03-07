@@ -8,6 +8,7 @@ import '../node_modules/@fortawesome/fontawesome-free/css/all.min.css';
 /* Bootstrap 5.1 */
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 import App from './App';
 
